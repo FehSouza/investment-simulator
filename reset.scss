@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -51,25 +55,16 @@ textarea {
   box-sizing: border-box;
   margin: 0;
   outline: none;
-  border: 1px solid #e1e0e8;
-  border-radius: 6px;
+  border: none;
+  border-radius: 0;
   background-color: #f7f6ff;
-  padding: 8px 12px;
+  padding: 12px;
   color: #030042;
   font-weight: 400;
   font-size: 16px;
 
   &::placeholder {
     color: #65646f;
-  }
-
-  &:hover,
-  &:focus {
-    border: 1px solid #65646f;
-  }
-
-  &:focus {
-    box-shadow: 0 0 8px #e1e0e8;
   }
 
   @media (max-width: 768px) {
@@ -89,6 +84,7 @@ input[type='number'] {
 button {
   transition-duration: 350ms;
   border: none;
+  border-radius: 8px;
   background-color: #030042;
   color: #e8e8e9;
 
@@ -96,7 +92,7 @@ button {
     cursor: pointer;
     box-shadow: none;
     border: none;
-    background-color: #030042e6;
+    background-color: #030042d9;
   }
 
   &:disabled {
