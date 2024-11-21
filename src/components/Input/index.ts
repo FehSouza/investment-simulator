@@ -2,7 +2,7 @@ import { randomId, createElement } from '../../utils'
 import styles from './styles.module.scss'
 
 type InputEvent = Exclude<Event, 'target'> & { target: HTMLInputElement }
-type Field = HTMLDivElement & { getValue: () => string }
+export type Field = HTMLDivElement & { getValue: () => string; setValue: (value: string) => void }
 
 interface InputProps {
   label: string
@@ -24,6 +24,7 @@ export const Input = ({ label, prefix, placeholder, oninput, htmlFor, value, max
   const $field = createElement('div', { className: styles.field }, $label, $wrapper) as Field
 
   $field.getValue = () => $input.value
+  $field.setValue = (value: string) => ($input.value = value)
 
   return $field
 }

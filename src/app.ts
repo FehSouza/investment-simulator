@@ -1,49 +1,96 @@
-import { Input } from './components'
-import { createElement, maskCurrency, maskInterest, maskNumber } from './utils'
+import { Field, Input } from './components'
+import { createElement, formatToNumber, maskCurrency, maskInterest, maskNumber } from './utils'
 import styles from './app.module.scss'
 
 export const App = () => {
-  const initialInput = Input({
+  const inputValue = (input: Field) => formatToNumber(input.getValue())
+
+  const disabledSubmitButton = () => {
+    if (!inputValue(initial) || !inputValue(monthly) || !inputValue(interest) || !inputValue(duration)) return true
+    return false
+  }
+
+  const disabledCleanButton = () => {
+    if (!inputValue(initial) && !inputValue(monthly) && !inputValue(interest) && !inputValue(duration)) return true
+    return false
+  }
+
+  const handleSubmit = (e: Event) => {
+    e.preventDefault()
+
+    const initialValue = inputValue(initial)
+    const monthlyValue = inputValue(monthly)
+    const interestValue = inputValue(interest)
+    const durationValue = inputValue(duration)
+
+    console.log({ initialValue, monthlyValue, interestValue, durationValue })
+  }
+
+  const handleClean = () => {
+    initial.setValue('')
+    monthly.setValue('')
+    interest.setValue('')
+    duration.setValue('')
+    submitButton.disabled = true
+    cleanButton.disabled = true
+  }
+
+  const initial = Input({
     prefix: 'R$',
     placeholder: '0,00',
     label: 'Valor inicial do investimento',
-    oninput: (event) => (event.target.value = maskCurrency(event.target.value)),
+    oninput: (event) => {
+      event.target.value = maskCurrency(event.target.value)
+      submitButton.disabled = disabledSubmitButton()
+      cleanButton.disabled = disabledCleanButton()
+    },
   })
 
-  const monthlyInput = Input({
+  const monthly = Input({
     prefix: 'R$',
     placeholder: '0,00',
     label: 'Valor dos aportes mensais',
-    oninput: (event) => (event.target.value = maskCurrency(event.target.value)),
+    oninput: (event) => {
+      event.target.value = maskCurrency(event.target.value)
+      submitButton.disabled = disabledSubmitButton()
+      cleanButton.disabled = disabledCleanButton()
+    },
   })
 
-  const interestInput = Input({
+  const interest = Input({
     prefix: '%',
     placeholder: '0,00',
     label: 'Taxa de juros anual',
     maxLength: 6,
-    oninput: (event) => (event.target.value = maskInterest(event.target.value)),
+    oninput: (event) => {
+      event.target.value = maskInterest(event.target.value)
+      submitButton.disabled = disabledSubmitButton()
+      cleanButton.disabled = disabledCleanButton()
+    },
   })
 
-  const durationInput = Input({
+  const duration = Input({
     prefix: 'Anos',
     placeholder: '0',
     label: 'Duração do investimento',
-    oninput: (event) => (event.target.value = maskNumber(event.target.value)),
+    oninput: (event) => {
+      event.target.value = maskNumber(event.target.value)
+      submitButton.disabled = disabledSubmitButton()
+      cleanButton.disabled = disabledCleanButton()
+    },
   })
 
   const fieldsContainer = createElement(
     'div',
     { className: styles.fieldsContainer },
-    initialInput,
-    monthlyInput,
-    interestInput,
-    durationInput
+    initial,
+    monthly,
+    interest,
+    duration
   )
 
-  const submitButton = createElement('button', { disabled: true }, 'Calcular')
-  const cleanButton = createElement('button', { disabled: true }, 'Limpar')
-
+  const submitButton = createElement('button', { disabled: true, type: 'submit', onclick: handleSubmit }, 'Calcular')
+  const cleanButton = createElement('button', { disabled: true, type: 'reset', onclick: handleClean }, 'Limpar')
   const buttonsContainer = createElement('div', { className: styles.buttonsContainer }, submitButton, cleanButton)
 
   const title = createElement('h1', null, 'Simulador de Juros Compostos')
