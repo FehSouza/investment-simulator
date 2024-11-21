@@ -1,0 +1,47 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0 16px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+  border: 1px solid #e1e0e8;
+  border-radius: 8px;
+  background-color: #e7e7eb;
+  padding: 24px;
+}
+
+.fieldsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+
+  @media (max-width: 580px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.buttonsContainer {
+  width: calc((100% - 24px) / 2);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+
+  @media (max-width: 580px) {
+    width: 100%;
+  }
+}
+
+.resultsContainer {
+  margin-top: 32px;
+}
