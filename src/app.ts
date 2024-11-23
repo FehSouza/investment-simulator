@@ -5,25 +5,15 @@ import styles from './app.module.scss'
 export const App = () => {
   const inputValue = (input: Field) => formatToNumber(input.getValue())
 
-  const disabledSubmitButton = () => {
-    if (!inputValue(initial) || !inputValue(monthly) || !inputValue(interest) || !inputValue(duration)) return true
-    return false
-  }
-
-  const disabledCleanButton = () => {
-    if (!inputValue(initial) && !inputValue(monthly) && !inputValue(interest) && !inputValue(duration)) return true
-    return false
-  }
-
   const handleSubmit = (e: Event) => {
     e.preventDefault()
 
-    const initialValue = inputValue(initial)
-    const monthlyValue = inputValue(monthly)
-    const interestValue = inputValue(interest)
-    const durationValue = inputValue(duration)
-
-    console.log({ initialValue, monthlyValue, interestValue, durationValue })
+    console.log({
+      initial: inputValue(initial),
+      monthly: inputValue(monthly),
+      interest: inputValue(interest),
+      duration: inputValue(duration),
+    })
   }
 
   const handleClean = () => {
@@ -35,14 +25,25 @@ export const App = () => {
     cleanButton.disabled = true
   }
 
+  const disabledButtons = (fields: number[]) => {
+    console.log(fields)
+    submitButton.disabled = fields.some((item) => !item)
+    cleanButton.disabled = fields.every((item) => !item)
+  }
+
   const initial = Input({
     prefix: 'R$',
     placeholder: '0,00',
     label: 'Valor inicial do investimento',
     oninput: (event) => {
       event.target.value = maskCurrency(event.target.value)
-      submitButton.disabled = disabledSubmitButton()
-      cleanButton.disabled = disabledCleanButton()
+      const fields = [
+        formatToNumber(event.target.value),
+        inputValue(monthly),
+        inputValue(interest),
+        inputValue(duration),
+      ]
+      disabledButtons(fields)
     },
   })
 
@@ -52,8 +53,13 @@ export const App = () => {
     label: 'Valor dos aportes mensais',
     oninput: (event) => {
       event.target.value = maskCurrency(event.target.value)
-      submitButton.disabled = disabledSubmitButton()
-      cleanButton.disabled = disabledCleanButton()
+      const fields = [
+        inputValue(initial),
+        formatToNumber(event.target.value),
+        inputValue(interest),
+        inputValue(duration),
+      ]
+      disabledButtons(fields)
     },
   })
 
@@ -64,8 +70,13 @@ export const App = () => {
     maxLength: 6,
     oninput: (event) => {
       event.target.value = maskInterest(event.target.value)
-      submitButton.disabled = disabledSubmitButton()
-      cleanButton.disabled = disabledCleanButton()
+      const fields = [
+        inputValue(initial),
+        inputValue(monthly),
+        formatToNumber(event.target.value),
+        inputValue(duration),
+      ]
+      disabledButtons(fields)
     },
   })
 
@@ -75,8 +86,13 @@ export const App = () => {
     label: 'Duração do investimento',
     oninput: (event) => {
       event.target.value = maskNumber(event.target.value)
-      submitButton.disabled = disabledSubmitButton()
-      cleanButton.disabled = disabledCleanButton()
+      const fields = [
+        inputValue(initial),
+        inputValue(monthly),
+        inputValue(interest),
+        formatToNumber(event.target.value),
+      ]
+      disabledButtons(fields)
     },
   })
 
