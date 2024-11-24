@@ -1,4 +1,4 @@
-type Children =
+export type Children =
   | string
   | number
   | null
@@ -15,7 +15,7 @@ type CustomElement<Tag extends keyof HTMLElementTagNameMap> = Partial<
   }
 >
 
-type InternalCustomElement<Tag extends keyof HTMLElementTagNameMap> = Partial<
+export type InternalCustomElement<Tag extends keyof HTMLElementTagNameMap> = Partial<
   Omit<HTMLElementTagNameMap[Tag], 'children' | 'className'> & {
     className?: CustomElement<Tag>['className'] | CustomElement<Tag>['className'][]
   }

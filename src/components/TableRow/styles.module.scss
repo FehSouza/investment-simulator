@@ -1,0 +1,10 @@
+.tableRow {
+  display: grid;
+  grid-template-columns: 96px repeat(3, 1fr);
+  gap: 16px;
+  border-bottom: 1px solid #e1e0e8;
+
+  @media (max-width: 580px) {
+    grid-template-columns: 64px repeat(3, 1fr);
+  }
+}
