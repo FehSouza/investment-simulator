@@ -25,7 +25,7 @@ type GenericElement = CustomElement<keyof HTMLElementTagNameMap>
 
 const addClassName = (element: HTMLElement, className: GenericElement['className']) => {
   if (!className) return
-  if (Array.isArray(className)) return element.classList.add(...(className.flat(4).filter(Boolean) as string[]))
+  if (Array.isArray(className)) return element.classList.add(...(className.flat().filter(Boolean) as string[]))
   element.classList.add(className)
 }
 
